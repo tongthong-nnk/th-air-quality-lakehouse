@@ -1,0 +1,19 @@
+[project]
+name = "th-air-quality-lakehouse"
+version = "1.0.0"
+description = "Serverless AWS lakehouse for daily PM2.5 readings from every OpenAQ station in Thailand"
+requires-python = ">=3.11"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src/ingest", "src/glue", "scripts"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src/ingest", "src/glue", "scripts"]
+testpaths = ["tests"]
+addopts = "-ra"
+filterwarnings = ["ignore::DeprecationWarning"]
