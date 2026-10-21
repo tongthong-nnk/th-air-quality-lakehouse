@@ -18,7 +18,9 @@ Over 131,670 complete station-days at 145 stations, from June 2021 to October 20
   the WHO guideline of 15 µg/m³.
 - Nine in ten of the days above the standard fall in the haze season, December to April. 2024–25
   was the worst season, with 36% of station-days above the standard; 2025–26 was the cleanest of
-  the five, at 22%.
+  the five, at 22%. 2022–23 comes out at 32%, but 29 of its 151 days have no complete readings,
+  most of them from 24 February to 12 March 2023. In the rest of February 49% of station-days
+  were above the standard, so that season was probably worse than it looks.
 - January 2025 was the worst month: the average across stations was 47.3 µg/m³, and 68.5% of
   station-days were above the standard.
 
@@ -151,9 +153,10 @@ spare capacity, keeps a daily run at about two cents.
   before taking the date.
 - Some archive files use singular column names, `sensor_id` and `unit`.
 - A station with two PM2.5 sensors reports each hour twice, so `hours` counts distinct timestamps.
-- The archive stops for weeks at a time: 7 June to 22 September 2022, 1 July to 24 August 2025,
-  and 3 to 28 July 2026. The dashboard shows these as gaps, and the freshness check sends an email
-  once the newest day is more than six days old.
+- The archive has holes: no station has readings on 280 of the 1,965 days, in ten stretches. The
+  longest runs from 7 June to 22 September 2022 (108 days). The dashboard shows them as gaps and
+  counts the days each season has, and the freshness check sends an email once the newest day is
+  more than six days old.
 - FIRMS gives times in UTC as `HHMM` without leading zeros. Thailand is UTC+7, so one Thai day
   needs two UTC dates from the API.
 - Thailand lowered its 24-hour standard from 50 to 37.5 µg/m³ in June 2023. Every season is
