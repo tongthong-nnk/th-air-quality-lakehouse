@@ -1,0 +1,414 @@
+:root {
+  color-scheme: light;
+  --page: #f9f9f7;
+  --surface: #fcfcfb;
+  --ink: #0b0b0b;
+  --ink-2: #52514e;
+  --grid: #e1e0d9;
+  --axis: #c3c2b7;
+  --border: rgba(11, 11, 11, 0.1);
+  --land: #f0efec;
+  --series-1: #2a78d6;
+  --series-2: #eb6834;
+  /* Thailand's five PM2.5 index bands, one blue ramp from low to high. */
+  --band-1: #86b6ef;
+  --band-2: #5598e7;
+  --band-3: #2a78d6;
+  --band-4: #1c5cab;
+  --band-5: #104281;
+  --font: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --page: #0d0d0d;
+    --surface: #1a1a19;
+    --ink: #f0efec;
+    --ink-2: #c3c2b7;
+    --grid: #2c2c2a;
+    --axis: #383835;
+    --border: rgba(255, 255, 255, 0.1);
+    --land: #242423;
+    --series-1: #3987e5;
+    --series-2: #d95926;
+    --band-1: #184f95;
+    --band-2: #2a78d6;
+    --band-3: #5598e7;
+    --band-4: #86b6ef;
+    --band-5: #cde2fb;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--page);
+  color: var(--ink);
+  font: 15px/1.5 var(--font);
+}
+
+main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px 16px 48px;
+}
+
+h1 {
+  font-size: 30px;
+  line-height: 1.2;
+  margin: 0 0 8px;
+}
+
+h2 {
+  font-size: 19px;
+  margin: 0 0 4px;
+}
+
+h3 {
+  font-size: 15px;
+  margin: 0 0 8px;
+}
+
+a {
+  color: inherit;
+}
+
+.lede,
+.sub,
+.hint,
+footer {
+  color: var(--ink-2);
+}
+
+.lede {
+  font-size: 16px;
+  margin: 0 0 24px;
+  max-width: 70ch;
+}
+
+.sub {
+  margin: 0 0 16px;
+  max-width: 75ch;
+}
+
+.hint {
+  font-size: 13px;
+  margin: 4px 0 0;
+}
+
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.tile,
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.tile {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+}
+
+.tile-label {
+  font-size: 13px;
+  color: var(--ink-2);
+}
+
+.tile-value {
+  font-size: 30px;
+  font-weight: 600;
+  line-height: 1.25;
+  margin: 4px 0;
+}
+
+.tile-note {
+  font-size: 13px;
+  color: var(--ink-2);
+}
+
+.card {
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+.chart {
+  margin: 0;
+  position: relative;
+}
+
+.chart svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.chart:focus-visible {
+  outline: 2px solid var(--series-1);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+svg text {
+  fill: var(--ink-2);
+  font: 12px var(--font);
+  font-variant-numeric: tabular-nums;
+}
+
+svg .value-label {
+  fill: var(--ink);
+  font-weight: 600;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 20px;
+  margin: 12px 0 8px;
+}
+
+.filters label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 13px;
+  color: var(--ink-2);
+  min-width: 0;
+}
+
+select {
+  font: 15px var(--font);
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--axis);
+  border-radius: 8px;
+  padding: 6px 10px;
+  max-width: 100%;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  margin: 0 0 12px;
+  font-size: 13px;
+  color: var(--ink-2);
+}
+
+.legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legend i {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  display: inline-block;
+}
+
+.legend i.no-data {
+  border: 1px solid var(--axis);
+}
+
+.legend i.round {
+  border-radius: 50%;
+}
+
+.map-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 340px) minmax(0, 1fr);
+  grid-template-areas:
+    "map ranking"
+    "map inset";
+  gap: 24px 32px;
+  align-items: start;
+}
+
+.map {
+  grid-area: map;
+  max-width: 340px;
+}
+
+.ranking-box {
+  grid-area: ranking;
+}
+
+.inset-box {
+  grid-area: inset;
+}
+
+.inset {
+  max-width: 420px;
+}
+
+.ranking {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ranking button {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 56px;
+  gap: 2px 12px;
+  width: 100%;
+  padding: 6px 8px;
+  margin: 0 0 2px;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  color: var(--ink);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.ranking button:hover,
+.ranking button[aria-pressed="true"] {
+  background: var(--land);
+}
+
+.ranking .name {
+  overflow-wrap: anywhere;
+}
+
+.ranking .value {
+  text-align: right;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.ranking .bar {
+  grid-column: 1 / -1;
+  height: 6px;
+  border-radius: 0 3px 3px 0;
+  background: var(--series-1);
+}
+
+details {
+  margin-top: 16px;
+}
+
+summary {
+  cursor: pointer;
+  color: var(--ink-2);
+  font-size: 14px;
+}
+
+.table-wrap {
+  overflow-x: auto;
+  margin-top: 8px;
+}
+
+table {
+  border-collapse: collapse;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+th,
+td {
+  padding: 4px 10px;
+  border-bottom: 1px solid var(--grid);
+  text-align: right;
+  white-space: nowrap;
+}
+
+th:first-child,
+td:first-child {
+  text-align: left;
+}
+
+thead th {
+  color: var(--ink-2);
+  font-weight: 600;
+}
+
+.tooltip {
+  position: fixed;
+  z-index: 10;
+  pointer-events: none;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  padding: 8px 10px;
+  font-size: 13px;
+  max-width: 260px;
+}
+
+.tooltip strong {
+  display: block;
+  font-size: 15px;
+}
+
+.tooltip .key {
+  display: inline-block;
+  width: 12px;
+  height: 2px;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+.tooltip .muted {
+  color: var(--ink-2);
+}
+
+footer {
+  font-size: 13px;
+  margin-top: 24px;
+}
+
+footer p {
+  margin: 0 0 8px;
+  max-width: 80ch;
+}
+
+@media (max-width: 760px) {
+  main {
+    padding-top: 24px;
+  }
+
+  h1 {
+    font-size: 25px;
+  }
+
+  .kpis {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .tile-value {
+    font-size: 24px;
+  }
+
+  .card {
+    padding: 16px;
+  }
+
+  .map-layout {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "map"
+      "inset"
+      "ranking";
+  }
+
+  .map {
+    max-width: 300px;
+    width: 100%;
+    margin: 0 auto;
+  }
+}

@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Thailand PM2.5</title>
+  <meta name="description" content="Daily PM2.5 at every OpenAQ station in Thailand since June 2021, with the haze seasons compared.">
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <main>
+    <header class="intro">
+      <h1>PM2.5 across Thailand</h1>
+      <p id="coverage" class="lede">Daily averages from Thailand's air quality stations.</p>
+    </header>
+
+    <section class="kpis" aria-label="Summary">
+      <div class="tile">
+        <span class="tile-label">Stations</span>
+        <span class="tile-value" id="kpi-stations">–</span>
+        <span class="tile-note">with at least one complete day</span>
+      </div>
+      <div class="tile">
+        <span class="tile-label">Station-days</span>
+        <span class="tile-value" id="kpi-days">–</span>
+        <span class="tile-note">days with 18 or more hourly readings</span>
+      </div>
+      <div class="tile">
+        <span class="tile-label">Above the Thai standard</span>
+        <span class="tile-value" id="kpi-over">–</span>
+        <span class="tile-note">of station-days, 24-hour average over 37.5 µg/m³</span>
+      </div>
+      <div class="tile">
+        <span class="tile-label">Worst haze season</span>
+        <span class="tile-value" id="kpi-season">–</span>
+        <span class="tile-note" id="kpi-season-note">December to April</span>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="seasons-title">
+      <h2 id="seasons-title">Haze seasons compared</h2>
+      <p class="sub">Share of station-days above 37.5 µg/m³ from December to April. Thailand lowered its
+        24-hour standard from 50 to 37.5 µg/m³ in June 2023; every season here is measured against 37.5.</p>
+      <figure id="seasons-chart" class="chart"></figure>
+      <details>
+        <summary>Show as table</summary>
+        <div class="table-wrap"><table id="seasons-table"></table></div>
+      </details>
+    </section>
+
+    <section class="card" aria-labelledby="heatmap-title">
+      <h2 id="heatmap-title">Monthly average across all stations</h2>
+      <p class="sub">Each row runs from July to June, so one haze season sits in one row. Colour classes
+        follow Thailand's PM2.5 index bands.</p>
+      <div id="band-legend" class="legend" aria-label="Colour classes"></div>
+      <figure id="heatmap" class="chart"></figure>
+      <details>
+        <summary>Show as table</summary>
+        <div class="table-wrap"><table id="heatmap-table"></table></div>
+      </details>
+    </section>
+
+    <section class="card" aria-labelledby="stations-title">
+      <h2 id="stations-title">Stations</h2>
+      <div class="filters">
+        <label>Period
+          <select id="period"></select>
+        </label>
+      </div>
+      <p class="sub" id="stations-sub">Average PM2.5 at each station. Select a station to see its daily readings.</p>
+      <div id="map-legend" class="legend" aria-label="Colour classes"></div>
+      <div class="map-layout">
+        <figure id="map" class="chart map"></figure>
+        <div class="ranking-box">
+          <h3 id="ranking-title">Most days above the standard</h3>
+          <ol id="ranking" class="ranking"></ol>
+        </div>
+        <div class="inset-box">
+          <h3 id="inset-title">Greater Bangkok</h3>
+          <figure id="inset" class="chart inset"></figure>
+        </div>
+      </div>
+      <details>
+        <summary>Show all stations as a table</summary>
+        <div class="table-wrap"><table id="stations-table"></table></div>
+      </details>
+    </section>
+
+    <section class="card" aria-labelledby="station-title">
+      <h2 id="station-title">Daily readings</h2>
+      <div class="filters">
+        <label>Station
+          <select id="station"></select>
+        </label>
+        <label>Range
+          <select id="range">
+            <option value="year">Last 12 months</option>
+            <option value="all">Everything</option>
+          </select>
+        </label>
+      </div>
+      <p class="sub" id="station-sub"></p>
+      <figure id="daily" class="chart" tabindex="0" aria-describedby="daily-help"></figure>
+      <p id="daily-help" class="hint">Dashed lines: Thailand's 24-hour standard (37.5 µg/m³) and the WHO
+        guideline (15 µg/m³). Hover, or focus the chart and use the arrow keys, to read a day.</p>
+      <figure id="fires" class="chart" hidden></figure>
+      <details>
+        <summary>Show monthly averages as a table</summary>
+        <div class="table-wrap"><table id="daily-table"></table></div>
+      </details>
+    </section>
+
+    <footer>
+      <p>Readings: Thailand's Pollution Control Department via <a href="https://openaq.org">OpenAQ</a> (CC BY 4.0).
+        <span id="fires-credit">Fire detections: NASA FIRMS, VIIRS NOAA-20.</span>
+        Borders: Natural Earth.</p>
+      <p id="generated"></p>
+      <p>Built by the pipeline in <a href="https://github.com/tongthong-nnk/th-air-quality-lakehouse">th-air-quality-lakehouse</a>:
+        Lambda and Glue load the readings into Iceberg tables on S3, Athena builds the gold view, and
+        GitHub Actions exports it to this page.</p>
+    </footer>
+  </main>
+  <div id="tooltip" class="tooltip" role="status" hidden></div>
+</body>
+</html>

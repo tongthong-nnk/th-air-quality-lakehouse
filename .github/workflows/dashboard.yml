@@ -1,0 +1,62 @@
+name: Dashboard
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - dashboard/**
+      - scripts/export_dashboard.py
+      - .github/workflows/dashboard.yml
+  # 11:30 in Bangkok, two hours after the daily pipeline run.
+  schedule:
+    - cron: "30 4 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    # Before the AWS stack exists the page shows the snapshot in dashboard/data/, so there is
+    # nothing new to publish on a schedule.
+    if: github.event_name != 'schedule' || vars.AWS_DASHBOARD_ROLE_ARN != ''
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        if: vars.AWS_DASHBOARD_ROLE_ARN != ''
+        with:
+          python-version: "3.13"
+      - if: vars.AWS_DASHBOARD_ROLE_ARN != ''
+        run: pip install boto3==1.43.116
+      - uses: aws-actions/configure-aws-credentials@v6
+        if: vars.AWS_DASHBOARD_ROLE_ARN != ''
+        with:
+          role-to-assume: ${{ vars.AWS_DASHBOARD_ROLE_ARN }}
+          aws-region: ap-southeast-1
+      - name: Export the gold view
+        if: vars.AWS_DASHBOARD_ROLE_ARN != ''
+        run: python scripts/export_dashboard.py --workgroup thaq --out dashboard/data/dashboard.json
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: dashboard
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5
