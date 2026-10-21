@@ -1,7 +1,7 @@
 [project]
 name = "th-air-quality-lakehouse"
 version = "1.0.0"
-description = "Serverless AWS lakehouse for daily PM2.5 readings from every OpenAQ station in Thailand"
+description = "Serverless AWS lakehouse for PM2.5 from Thailand's government air quality stations"
 requires-python = ">=3.11"
 
 [tool.ruff]

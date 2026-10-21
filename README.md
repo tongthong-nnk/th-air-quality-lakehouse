@@ -183,8 +183,9 @@ A full backfill, run locally with `make local-run` on 4 CPU cores:
 | Silver (6 yearly runs), gold and export | 6 min 6 s                                            |
 | Full gold rebuild on Trino              | 3.5 s                                                |
 
-This run had no FIRMS key, so it has no fire detections. Silver also keeps PM10, ozone, NO₂, SO₂
-and CO, which the gold layer does not use yet.
+This run had no API keys: its 145 stations came from a listing of the OpenAQ archive, passed with
+`--locations`, and it has no fire detections. Silver also keeps PM10, ozone, NO₂, SO₂ and CO, which
+the gold layer does not use yet.
 
 ## Cost
 
