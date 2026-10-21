@@ -1,0 +1,26 @@
+# A local stand-in for Glue Data Catalog and Athena: an Iceberg REST catalog, and Trino, the
+# engine Athena v3 is built on. Used by the SQL tests and scripts/run_local.py; start it with
+# `make local-up`. Spark on the host writes to the same warehouse path, so the path is the same
+# inside and outside the containers.
+services:
+  catalog:
+    image: apache/iceberg-rest-fixture:1.10.1
+    # The catalog writes table metadata next to files that Spark on the host writes.
+    user: "${HOST_UID:-0}:${HOST_GID:-0}"
+    environment:
+      CATALOG_WAREHOUSE: file:///tmp/thaq-warehouse/
+      CATALOG_URI: jdbc:sqlite:file:/tmp/thaq-warehouse/catalog.db
+    ports:
+      - "8181:8181"
+    volumes:
+      - /tmp/thaq-warehouse:/tmp/thaq-warehouse
+  trino:
+    image: trinodb/trino:484
+    user: root
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./trino/iceberg.properties:/etc/trino/catalog/iceberg.properties:ro
+      - /tmp/thaq-warehouse:/tmp/thaq-warehouse
+    depends_on:
+      - catalog
