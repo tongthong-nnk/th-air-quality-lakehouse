@@ -1,0 +1,39 @@
+directory:
+  - .
+framework:
+  - terraform
+  - github_actions
+compact: true
+quiet: true
+# Do not fetch guideline links from Prisma Cloud. The checks themselves run offline.
+skip-download: true
+
+# Checks that do not fit this project, with the reason. Everything else must pass.
+skip-check:
+  # Customer managed KMS keys cost $1 a month each, and the data is public. S3, CloudWatch Logs,
+  # Lambda and Scheduler already encrypt at rest with keys that AWS manages.
+  - CKV_AWS_145 # S3 default encryption with KMS
+  - CKV_AWS_158 # CloudWatch log groups with KMS
+  - CKV_AWS_173 # Lambda environment variables with KMS; they hold names, the API keys are in SSM
+  - CKV_AWS_26 # SNS with KMS; an alarm cannot publish to a topic that uses the AWS managed key
+  - CKV_AWS_297 # Scheduler with KMS
+  - CKV_AWS_195 # Glue security configuration; the bucket default already encrypts the job output
+
+  # The lake can be rebuilt: raw files can be downloaded again, and silver and gold are
+  # rebuilt from raw by the pipeline.
+  - CKV_AWS_21 # S3 versioning; Iceberg keeps its own snapshots, and VACUUM deletes on purpose
+  - CKV_AWS_144 # S3 cross-region replication
+  - CKV_AWS_18 # S3 server access logs
+  - CKV2_AWS_62 # S3 event notifications; Step Functions starts every step, nothing reacts to uploads
+
+  # Step Functions runs the Lambda functions synchronously, retries them and emails on failure.
+  - CKV_AWS_116 # Lambda dead letter queue; only used for asynchronous calls
+  # New accounts can have a concurrency limit of 10, and AWS keeps 10 unreserved, so nothing can
+  # be reserved. The Map state limits the pipeline to 4 calls at a time instead.
+  - CKV_AWS_115 # Lambda reserved concurrency
+  - CKV_AWS_117 # Lambda in a VPC; the functions call public APIs, which would need a NAT gateway
+  - CKV_AWS_272 # Lambda code signing; Terraform deploys the code straight from this repository
+  - CKV_AWS_50 # Lambda X-Ray
+  - CKV_AWS_284 # Step Functions X-Ray; the execution history shows each step's time and error
+  - CKV_AWS_285 # Step Functions logging; same, and the failure email links to the execution
+  - CKV_AWS_338 # Log retention of a year; logs are for debugging recent runs, kept 14 days

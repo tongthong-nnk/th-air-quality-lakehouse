@@ -1,0 +1,26 @@
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      actions:
+        patterns: ["*"]
+
+  - package-ecosystem: pip
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      python:
+        patterns: ["*"]
+    ignore:
+      # Glue 5.1 runs Spark 3.5, so the tests must too.
+      - dependency-name: pyspark
+        update-types: ["version-update:semver-major", "version-update:semver-minor"]
+
+  - package-ecosystem: terraform
+    directory: /infra
+    schedule:
+      interval: monthly
