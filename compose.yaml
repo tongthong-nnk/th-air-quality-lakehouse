@@ -2,11 +2,36 @@
 # engine Athena v3 is built on. Used by the SQL tests and scripts/run_local.py; start it with
 # `make local-up`. Spark on the host writes to the same warehouse path, so the path is the same
 # inside and outside the containers.
+#
+# Both containers run as root and make every folder and file they create in the warehouse
+# writable for all users. Spark on the host, which runs as you, can then write into the tables,
+# and `make local-clean` can delete them. The catalog cannot run as you instead: Hadoop inside it
+# fails for a user that has no entry in the image's /etc/passwd.
+configs:
+  # Hadoop in the catalog sets the mode of each folder it creates from this setting and ignores
+  # the process umask.
+  catalog-core-site:
+    content: |
+      <configuration>
+        <property>
+          <name>fs.permissions.umask-mode</name>
+          <value>000</value>
+        </property>
+      </configuration>
+
 services:
   catalog:
     image: apache/iceberg-rest-fixture:1.10.1
-    # The catalog writes table metadata next to files that Spark on the host writes.
-    user: "${HOST_UID:-0}:${HOST_GID:-0}"
+    user: root
+    # The image's own server, with the configuration above on the class path.
+    command:
+      - java
+      - -cp
+      - /etc/hadoop:iceberg-rest-adapter.jar
+      - org.apache.iceberg.rest.RESTCatalogServer
+    configs:
+      - source: catalog-core-site
+        target: /etc/hadoop/core-site.xml
     environment:
       CATALOG_WAREHOUSE: file:///tmp/thaq-warehouse/
       CATALOG_URI: jdbc:sqlite:file:/tmp/thaq-warehouse/catalog.db
@@ -17,6 +42,7 @@ services:
   trino:
     image: trinodb/trino:484
     user: root
+    command: [sh, -c, "umask 0000 && exec /usr/lib/trino/bin/launcher run --etc-dir /etc/trino"]
     ports:
       - "8080:8080"
     volumes:

@@ -38,7 +38,7 @@ def conn():
     try:
         conn = local_trino.connect()
         local_trino.query(conn, "SELECT 1")
-    except (trino.exceptions.TrinoError, OSError) as error:
+    except (trino.exceptions.TrinoConnectionError, OSError) as error:
         if os.environ.get("REQUIRE_TRINO"):
             raise
         pytest.skip(f"Trino is not running (make local-up): {error}")

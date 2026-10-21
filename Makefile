@@ -14,11 +14,9 @@ test:
 test-sql: local-up
 	REQUIRE_TRINO=1 pytest tests/test_gold_sql.py
 
-# The catalog container runs as you, because it writes table metadata next to files that
-# Spark on this machine writes.
 local-up:
 	mkdir -p /tmp/thaq-warehouse
-	HOST_UID=$$(id -u) HOST_GID=$$(id -g) docker compose up -d --wait
+	docker compose up -d --wait
 
 local-run:
 	PYTHONPATH=src/ingest:src/glue:scripts python scripts/run_local.py $(ARGS)
