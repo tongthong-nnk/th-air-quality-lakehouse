@@ -16,7 +16,7 @@ step 8.
 ## 1. Publish the dashboard
 
 In the repository settings, open Pages and set the source to GitHub Actions. Then run the
-Dashboard workflow from the Actions tab. Until step 7 the page shows the data committed in
+Dashboard workflow from the Actions tab. Until step 8 the page shows the data committed in
 `dashboard/data/`.
 
 ## 2. Credentials for Terraform
