@@ -1,0 +1,5 @@
+alert_email = "you@example.com"
+github_repo = "tongthong-nnk/th-air-quality-lakehouse"
+
+# Leave off until the first manual run has succeeded (docs/deploy.md).
+schedule_enabled = false
