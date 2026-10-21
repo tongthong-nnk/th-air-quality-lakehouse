@@ -144,7 +144,7 @@ backfill, load the days in between with `run_window` first.
 ## Remove everything
 
 1. To keep the dashboard, commit its last export and delete the `AWS_DASHBOARD_ROLE_ARN`
-   variable, so the workflow stops querying AWS:
+   variable, so the workflow stops querying AWS. From the repository root:
 
    ```bash
    curl -fsSo dashboard/data/dashboard.json \
@@ -152,8 +152,8 @@ backfill, load the days in between with `run_window` first.
    git commit -am "Freeze dashboard data" && git push
    ```
 
-2. If you imported an existing OIDC provider in step 5, keep it out of the destroy:
-   `tf state rm aws_iam_openid_connect_provider.github`.
+2. Back in `infra/`: if you imported an existing OIDC provider in step 5, keep it out of the
+   destroy with `tf state rm aws_iam_openid_connect_provider.github`.
 3. Delete the stack, including the lake bucket and its data: `tf destroy`.
 4. Delete the API keys:
    `aws ssm delete-parameters --names /thaq/openaq-api-key /thaq/firms-map-key`.
