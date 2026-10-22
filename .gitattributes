@@ -1,0 +1,3 @@
+# Terraform reads sql/ into the state machine and zips src/ingest. LF on every OS keeps those
+# bytes the same whether the stack is applied from Linux, macOS or Windows.
+* text=auto eol=lf
