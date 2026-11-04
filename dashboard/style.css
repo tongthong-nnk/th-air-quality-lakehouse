@@ -10,14 +10,14 @@
   --land: #f0efec;
   --series-1: #2a78d6;
   --series-2: #eb6834;
-  /* Thailand's five PM2.5 index bands, coloured as the official index does (blue, yellow, orange,
-     red) except that "good" is light blue instead of green, so red-green colour-blind readers can
-     still tell every band from its neighbours. */
+  /* Thailand's five PM2.5 index bands in the official index colours: blue, green, yellow, orange,
+     red. Green, yellow, orange and red each get a different lightness, because red-green
+     colour-blind readers tell them apart by lightness alone. */
   --band-1: #1c5cab;
-  --band-2: #6da7ec;
-  --band-3: #fec848;
-  --band-4: #e15f0a;
-  --band-5: #9d0221;
+  --band-2: #4ac06c;
+  --band-3: #fcca21;
+  --band-4: #d85a04;
+  --band-5: #8a0013;
   --font: system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 
@@ -35,10 +35,10 @@
     --series-1: #3987e5;
     --series-2: #d95926;
     --band-1: #1c5cab;
-    --band-2: #6da7ec;
-    --band-3: #fecf7f;
-    --band-4: #ef8604;
-    --band-5: #d02a3a;
+    --band-2: #70c35d;
+    --band-3: #ffd988;
+    --band-4: #d16100;
+    --band-5: #b1011b;
   }
 }
 
