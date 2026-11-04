@@ -13,6 +13,12 @@ step 8.
 - A free NASA FIRMS MAP_KEY from https://firms.modaps.eosdis.nasa.gov/api/map_key/.
 - This repository on GitHub, with Actions enabled.
 
+The commands are bash. On Windows, run them in Git Bash and start with
+`export MSYS_NO_PATHCONV=1`: without it, Git Bash turns arguments such as `/thaq/openaq-api-key`
+into Windows paths before the AWS CLI sees them. The Windows AWS CLI also ends its output with a
+carriage return, so add `| tr -d '\r'` wherever its output goes into a variable
+(`ACCOUNT_ID` in step 3, `arn` and `status` in `run_window`).
+
 ## 1. Publish the dashboard
 
 In the repository settings, open Pages and set the source to GitHub Actions. Then run the
