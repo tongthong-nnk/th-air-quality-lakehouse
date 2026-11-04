@@ -10,14 +10,14 @@
   --land: #f0efec;
   --series-1: #2a78d6;
   --series-2: #eb6834;
-  /* Thailand's five PM2.5 index bands as one ramp: mint, lime, gold, orange, red. Each band is
-     darker than the one before, so the order reads at a glance, and red-green colour-blind
-     readers, who tell these hues apart mostly by lightness, still see five steps. */
-  --band-1: #9cffcb;
-  --band-2: #b5e45d;
-  --band-3: #e3aa00;
-  --band-4: #e36b02;
-  --band-5: #c2272a;
+  /* Thailand's five PM2.5 index bands, cool to warm: blue, light blue, yellow, orange, red. The
+     official index paints "good" green; light blue is used instead because red-green
+     colour-blind readers confuse green with yellow and orange, but not blue. */
+  --band-1: #2975c9;
+  --band-2: #67c4f2;
+  --band-3: #fdd343;
+  --band-4: #f48221;
+  --band-5: #d02c2e;
   --font: system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 
@@ -34,11 +34,11 @@
     --land: #242423;
     --series-1: #3987e5;
     --series-2: #d95926;
-    --band-1: #96f6c0;
-    --band-2: #aad951;
-    --band-3: #d59f05;
-    --band-4: #dc6702;
-    --band-5: #c52b30;
+    --band-1: #3681d7;
+    --band-2: #6dcaf8;
+    --band-3: #f8d14f;
+    --band-4: #f78526;
+    --band-5: #de3c3a;
   }
 }
 
