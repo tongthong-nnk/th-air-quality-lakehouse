@@ -10,12 +10,14 @@
   --land: #f0efec;
   --series-1: #2a78d6;
   --series-2: #eb6834;
-  /* Thailand's five PM2.5 index bands, one blue ramp from low to high. */
-  --band-1: #86b6ef;
-  --band-2: #5598e7;
-  --band-3: #2a78d6;
-  --band-4: #1c5cab;
-  --band-5: #104281;
+  /* Thailand's five PM2.5 index bands, coloured as the official index does (blue, yellow, orange,
+     red) except that "good" is light blue instead of green, so red-green colour-blind readers can
+     still tell every band from its neighbours. */
+  --band-1: #1c5cab;
+  --band-2: #6da7ec;
+  --band-3: #fec848;
+  --band-4: #e15f0a;
+  --band-5: #9d0221;
   --font: system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 
@@ -32,11 +34,11 @@
     --land: #242423;
     --series-1: #3987e5;
     --series-2: #d95926;
-    --band-1: #184f95;
-    --band-2: #2a78d6;
-    --band-3: #5598e7;
-    --band-4: #86b6ef;
-    --band-5: #cde2fb;
+    --band-1: #1c5cab;
+    --band-2: #6da7ec;
+    --band-3: #fecf7f;
+    --band-4: #ef8604;
+    --band-5: #d02a3a;
   }
 }
 
